@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -124,6 +123,14 @@ public class EntryResource {
     public ResponseEntity<Void> deleteEntry(@PathVariable Long id) {
         log.debug("REST request to delete Entry : {}", id);
         entryService.delete(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+    @DeleteMapping("/api/blogs/{id}/clean")
+    public ResponseEntity<Void> deleteEntryWords(@PathVariable Long id, @RequestParam("keywords") List<String> keywords){
+        log.debug("REST request to delete Entry based on certain keywords on : {}", id);
+
+        entryService.deleteOnKeywords(id, keywords);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }
