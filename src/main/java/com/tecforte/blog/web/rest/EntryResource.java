@@ -14,11 +14,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -124,6 +126,17 @@ public class EntryResource {
     public ResponseEntity<Void> deleteEntry(@PathVariable Long id) {
         log.debug("REST request to delete Entry : {}", id);
         entryService.delete(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+    @Validated
+    @DeleteMapping("/api/blogs/{id}/clean")
+    public ResponseEntity<Void> deleteEntryWords(@PathVariable Long id, @NotNull @RequestParam("keywords") List<String> keywords){
+        log.debug("REST request to delete Entry based on certain keywords on : {}", id);
+        for(String keyword: keywords) {
+            log.debug("KEYWORDS: " + keyword);
+        }
+        entryService.deleteOnKeywords(id, keywords);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }
