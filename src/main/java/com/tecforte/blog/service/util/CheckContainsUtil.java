@@ -47,9 +47,9 @@ public final class CheckContainsUtil {
                 }
             });
     }
-    public static List<Entry> checkContainsKeywords(List<String> keywords, List<Entry> entryList){
+    public static Set<Entry> checkContainsKeywords(List<String> keywords, List<Entry> entryList){
 
-        List<Entry> entryListDel = new ArrayList<>();
+        Set<Entry> entryListDel = new HashSet<>();
         for(String keyword: keywords){
             keyword = keyword.toUpperCase();
             String regex = ".*\\b" +keyword+ "\\b.*";

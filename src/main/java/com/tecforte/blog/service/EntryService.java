@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 /**
@@ -104,8 +105,8 @@ public class EntryService {
         Optional<List<Entry>> entryList = entryRepository.findAllByBlog_Id(id);
         if(entryList.isPresent()) {
             List<Entry> entries = entryList.get();
-            entries = CheckContainsUtil.checkContainsKeywords(keywords, entries);
-            entryRepository.deleteAll(entries);
+            Set<Entry> entrySet = CheckContainsUtil.checkContainsKeywords(keywords, entries);
+            entryRepository.deleteAll(entrySet);
         }
 
     }
