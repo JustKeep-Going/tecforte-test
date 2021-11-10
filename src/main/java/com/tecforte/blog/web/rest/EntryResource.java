@@ -129,13 +129,10 @@ public class EntryResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 
-    @Validated
     @DeleteMapping("/api/blogs/{id}/clean")
-    public ResponseEntity<Void> deleteEntryWords(@PathVariable Long id, @NotNull @RequestParam("keywords") List<String> keywords){
+    public ResponseEntity<Void> deleteEntryWords(@PathVariable Long id, @RequestParam("keywords") List<String> keywords){
         log.debug("REST request to delete Entry based on certain keywords on : {}", id);
-        for(String keyword: keywords) {
-            log.debug("KEYWORDS: " + keyword);
-        }
+
         entryService.deleteOnKeywords(id, keywords);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }

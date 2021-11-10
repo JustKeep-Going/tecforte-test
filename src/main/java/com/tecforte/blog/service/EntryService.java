@@ -1,13 +1,11 @@
 package com.tecforte.blog.service;
 
 import com.tecforte.blog.domain.Entry;
-import com.tecforte.blog.domain.enumeration.EmotionEnum;
 import com.tecforte.blog.repository.EntryRepository;
 import com.tecforte.blog.service.dto.BlogDTO;
 import com.tecforte.blog.service.dto.EntryDTO;
 import com.tecforte.blog.service.mapper.EntryMapper;
 import com.tecforte.blog.service.util.CheckContainsUtil;
-import com.tecforte.blog.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,12 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-import static org.hibernate.id.IdentifierGenerator.ENTITY_NAME;
 
 /**
  * Service Implementation for managing {@link Entry}.
@@ -109,12 +104,7 @@ public class EntryService {
         Optional<List<Entry>> entryList = entryRepository.findAllByBlog_Id(id);
         if(entryList.isPresent()) {
             List<Entry> entries = entryList.get();
-
             entries = CheckContainsUtil.checkContainsKeywords(keywords, entries);
-            for(Entry entry: entries){
-                log.debug("Entry Title: " + entry.getTitle());
-                log.debug("Entry Content: " + entry.getContent());
-            }
             entryRepository.deleteAll(entries);
         }
 
