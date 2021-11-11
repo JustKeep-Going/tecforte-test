@@ -55,9 +55,7 @@ public final class CheckContainsUtil {
             String regex = ".*\\b" +keyword+ "\\b.*";
 
             for(Entry entry: entryList){
-                if(entry.getTitle().toUpperCase().matches(regex))
-                    entryListDel.add(entry);
-                if(entry.getContent().toUpperCase().matches(regex))
+                if(entry.getTitle().toUpperCase().matches(regex) || entry.getContent().toUpperCase().matches(regex))
                     entryListDel.add(entry);
             }
         }
